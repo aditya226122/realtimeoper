@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Monitor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .current-weather {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .current-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .location i {
+            font-size: 1.5rem;
+        }
+
+        .current-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .temperature {
+            font-size: 4rem;
+            font-weight: bold;
+        }
+
+        .weather-icon {
+            font-size: 5rem;
+            margin-right: 20px;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .detail-card i {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .forecast {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .day-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .day-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .day-date {
+            opacity: 0.8;
+        }
+
+        .day-weather {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .day-temperature {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .day-icon {
+            font-size: 3.5rem;
+        }
+
+        .day-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .day-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-detail i {
+            font-size: 1.2rem;
+            width: 30px;
+        }
+
+        .hourly-forecast {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hourly-title {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .hourly-items {
+            display: flex;
+            justify-content: space-between;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 10px;
+        }
+
+        .hour-item {
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .hour-time {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .hour-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .hour-temp {
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .current-main {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .temperature {
+                font-size: 3rem;
+            }
+            
+            .weather-icon {
+                font-size: 4rem;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Weather Monitor</h1>
+            <p>Real-time weather tracking for successive two-day periods</p>
+        </header>
+
+        <section class="current-weather">
+            <div class="current-header">
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h2>Kakinada, Andhra Pradesh</h2>
+                </div>
+                <div class="last-updated">
+                    Updated: <span id="update-time">Just now</span>
+                </div>
+            </div>
+            
+            <div class="current-main">
+                <div class="weather-info">
+                    <div class="temperature">28°C</div>
+                    <div class="weather-condition">Partly Cloudy</div>
+                </div>
+                <div class="weather-icon">
+                    <i class="fas fa-cloud-sun"></i>
+                </div>
+            </div>
+            
+            <div class="weather-details">
+                <div class="detail-card">
+                    <i class="fas fa-wind"></i>
+                    <div class="detail-value">12 km/h</div>
+                    <div class="detail-label">Wind Speed</div>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-tint"></i>
+                    <div class="detail-value">78%</div>
+                    <div class="detail-label">Humidity</div>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                    <div class="detail-value">1012 hPa</div>
+                    <div class="detail-label">Pressure</div>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-eye"></i>
+                    <div class="detail-value">10 km</div>
+                    <div class="detail-label">Visibility</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="forecast">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Today</div>
+                    <div class="day-date" id="today-date">June 12, 2023</div>
+                </div>
+                
+                <div class="day-weather">
+                    <div class="day-temperature">28°C</div>
+                    <div class="day-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                </div>
+                
+                <div class="day-details">
+                    <div class="day-detail">
+                        <i class="fas fa-wind"></i>
+                        <span>Wind: 12 km/h</span>
+                    </div>
+                    <div class="day-detail">
+                        <i class="fas fa-tint"></i>
+                        <span>Humidity: 78%</span>
+                    </div>
+                    <div class="day-detail">
+                        <i class="fas fa-sun"></i>
+                        <span>UV Index: 7</span>
+                    </div>
+                    <div class="day-detail">
+                        <i class="fas fa-cloud-rain"></i>
+                        <span>Precipitation: 10%</span>
+                    </div>
+                </div>
+                
+                <div class="hourly-forecast">
+                    <div class="hourly-title">Hourly Forecast</div>
+                    <div class="hourly-items" id="today-hourly">
+                        <!-- Today's hourly forecast will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Tomorrow</div>
+                    <div class="day-date" id="tomorrow-date">June 13, 2023</div>
+                </div>
+                
+                <div class="day-weather">
+                    <div class="day-temperature">30°C</div>
+                    <div class="day-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                </div>
+                
+                <div class="day-details">
+                    <div class="day-detail">
+                        <i class="fas fa-wind"></i>
+                        <span>Wind: 10 km/h</span>
+                    </div>
+                    <div class="day-detail">
+                        <i class="fas fa-tint"></i>
+                        <span>Humidity: 65%</span>
+                    </div>
+                    <div class="day-detail">
+                        <i class="fas fa-sun"></i>
+                        <span>UV Index: 9</span>
+                    </div>
+                    <div class="day-detail">
+                        <i class="fas fa-cloud-rain"></i>
+                        <span>Precipitation: 5%</span>
+                    </div>
+                </div>
+                
+                <div class="hourly-forecast">
+                    <div class="hourly-title">Hourly Forecast</div>
+                    <div class="hourly-items" id="tomorrow-hourly">
+                        <!-- Tomorrow's hourly forecast will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>Kakinada Weather Monitor &copy; <span id="current-year">2023</span> | Data updates every 15 minutes</p>
+        </footer>
+    </div>
+
+    <script>
+        // Update dates dynamically
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('today-date').textContent = today.toLocaleDateString('en-US', options);
+        document.getElementById('tomorrow-date').textContent = tomorrow.toLocaleDateString('en-US', options);
+        document.getElementById('current-year').textContent = today.getFullYear();
+        
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('update-time').textContent = timeString;
+        }
+        
+        updateTime();
+        setInterval(updateTime, 60000); // Update every minute
+        
+        // Generate hourly forecast data
+        function generateHourlyForecast(day, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            const now = new Date();
+            let startHour;
+            
+            if (day === 'today') {
+                // For today, start from current hour
+                startHour = now.getHours();
+            } else {
+                // For tomorrow, start from 6 AM
+                startHour = 6;
+            }
+            
+            // Generate 6 hourly intervals
+            for (let i = 0; i < 6; i++) {
+                const hour = (startHour + i * 2) % 24;
+                const hourItem = document.createElement('div');
+                hourItem.className = 'hour-item';
+                
+                // Format time display
+                let timeDisplay;
+                if (day === 'today' && i === 0) {
+                    timeDisplay = 'Now';
+                } else {
+                    timeDisplay = hour <= 12 ? `${hour} AM` : `${hour - 12} PM`;
+                    if (hour === 0) timeDisplay = '12 AM';
+                    if (hour === 12) timeDisplay = '12 PM';
+                }
+                
+                // Generate temperature based on time of day
+                let temp;
+                if (hour >= 6 && hour < 12) {
+                    // Morning: increasing temperature
+                    temp = 25 + Math.floor((hour - 6) * 1.5);
+                } else if (hour >= 12 && hour < 18) {
+                    // Afternoon: peak temperature
+                    temp = 30 - Math.floor((hour - 12) * 0.5);
+                } else {
+                    // Evening/Night: decreasing temperature
+                    temp = 28 - Math.floor((hour < 6 ? hour + 18 : hour - 18) * 0.8);
+                }
+                
+                // Select appropriate icon based on time and day
+                let iconClass;
+                if (day === 'today') {
+                    if (hour >= 6 && hour < 18) {
+                        iconClass = hour < 12 ? 'fa-cloud-sun' : 'fa-cloud';
+                    } else {
+                        iconClass = 'fa-moon';
+                    }
+                } else {
+                    // Tomorrow is sunny
+                    iconClass = hour >= 6 && hour < 18 ? 'fa-sun' : 'fa-moon';
+                }
+                
+                hourItem.innerHTML = `
+                    <div class="hour-time">${timeDisplay}</div>
+                    <div class="hour-icon"><i class="fas ${iconClass}"></i></div>
+                    <div class="hour-temp">${temp}°</div>
+                `;
+                
+                container.appendChild(hourItem);
+            }
+        }
+        
+        // Generate hourly forecasts
+        generateHourlyForecast('today', 'today-hourly');
+        generateHourlyForecast('tomorrow', 'tomorrow-hourly');
+        
+        // Update hourly forecast every hour
+        setInterval(() => {
+            generateHourlyForecast('today', 'today-hourly');
+        }, 60 * 60 * 1000);
+        
+        // Update dates at midnight
+        function checkDateUpdate() {
+            const now = new Date();
+            if (now.getHours() === 0 && now.getMinutes() === 0) {
+                // It's midnight, update dates
+                const today = new Date();
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                document.getElementById('today-date').textContent = today.toLocaleDateString('en-US', options);
+                document.getElementById('tomorrow-date').textContent = tomorrow.toLocaleDateString('en-US', options);
+                
+                // Regenerate forecasts
+                generateHourlyForecast('today', 'today-hourly');
+                generateHourlyForecast('tomorrow', 'tomorrow-hourly');
+            }
+        }
+        
+        // Check for date update every minute
+        setInterval(checkDateUpdate, 60000);
+    </script>
+</body>
+</html>
